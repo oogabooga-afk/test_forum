@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #5e8258;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="my-5 text-center"><a href="{{ url_for('index') }}">Forum</a></h2>
+
+        <a href="{{ url_for('new_post') }}" class="btn btn-success mb-4">Nytt innlegg</a>
+
+        {% for post in posts %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>{{ post.title }}</h3>
+                    <small>OP: {{ post.author }}</small>
+                </div>
+                <div class="card-body">
+                    <p>{{ post.content }}</p>
+
+                    <h5>Kommentarer:</h5>
+                    <ul>
+                        {% for comment in post.comments %}
+                            <li><strong>{{ comment.author }}:</strong> {{ comment.content }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <form method="POST" action="{{ url_for('add_comment', post_id=post.id) }}">
+                        <div class="form-group">
+                            <label for="comment">Kommentar</label>
+                            <textarea class="form-control" id="comment" name="comment" rows="2" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
